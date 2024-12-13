@@ -1,16 +1,19 @@
-import { ethers } from 'hardhat';
+const hre = require("hardhat");
 
 async function main() {
-  const SmartVoting = await ethers.getContractFactory('SmartVoting');
-  const smartVoting = await SmartVoting.deploy();
+  const [deployer] = await hre.ethers.getSigners();
 
-  await smartVoting.deployed();
+  console.log("Deploying contracts with the account:", deployer.address);
 
-  console.log('SmartVoting deployed to:', smartVoting.address);
+  const Voting = await hre.ethers.getContractFactory("Voting");
+  const voting = await Voting.deploy();
+
+  console.log("Voting contract deployed to:", voting.address);
 }
 
 main()
+  .then(() => process.exit(0))
   .catch((error) => {
     console.error(error);
-    process.exitCode = 1;
+    process.exit(1);
   });
